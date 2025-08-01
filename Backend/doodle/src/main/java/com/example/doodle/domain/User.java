@@ -25,6 +25,9 @@ public class User {
     private String email; 
     private String password;
     private String username;
+
+    @Column(unique = true)
+    private String kakaoId; // 카카오 고유 식별자 (sub)
     
 }
 
