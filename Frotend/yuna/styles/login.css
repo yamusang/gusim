@@ -4,11 +4,10 @@
   font-weight: normal;
   font-style: normal;
 }
-
 body {
   margin: 0;
   padding: 0;
-  background-image: url('./back.jpg');
+  background-color: #5e5e5f;
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -55,11 +54,13 @@ body {
   color: #3048e3;
   letter-spacing: 2px;
   font-weight: bold;
+  font-family: 'dalmoori';
 }
 
 .main-panel p {
   font-size: 20px;
   margin-bottom: 40px;
+  font-family: 'dalmoori';
 }
 
 .right-panel {
@@ -71,6 +72,7 @@ body {
   gap: 20px;
   background: transparent;
   margin-left: -10px;
+  font-family: 'dalmoori';
 }
 
 .right-panel button {
@@ -146,4 +148,3 @@ body {
   border-radius: 5px;
   cursor: pointer;
 }
-/* 8 */

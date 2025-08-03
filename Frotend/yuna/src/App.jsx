@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
-import LoginPage from './pages/LoginPage'
-import HomePage from './pages/HomePage'
+import LoginPage from '../pages/LoginPage'
+import HomePage from '../pages/HomePage'
+
 
 export default function App() {
   return (
@@ -10,4 +11,3 @@ export default function App() {
     </Routes>
   )
 }
-// 9
