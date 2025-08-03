@@ -7,7 +7,6 @@ import com.example.doodle.domain.User;
 import java.util.List;
 import java.util.Optional;
 
-// import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;;
 
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -22,6 +21,8 @@ JPA에서는 이걸 반드시 만들어야 User 객체를 DB에 저장/조회/�
 
 UserRepository는 User와 DB를 연결해주는 필수 다리고,
 지금 네 회원가입/로그인 기능이 돌아가는 핵심 구성 요소야.
+
+List<User>는 "이메일 중복이 허용될 때"나 "여러명 반환할 때"만 사용함.
 
 
 */

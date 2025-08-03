@@ -1,7 +1,7 @@
 import React from 'react'
 import Button from '../common/Button'
 import { useNavigate } from 'react-router-dom';
-export default function HomeForm() {
+export default function HomeBtn() {
   const navigate = useNavigate();
   const isLoggedIn = !!localStorage.getItem("token");
 const handleClick = () => {
@@ -9,7 +9,7 @@ const handleClick = () => {
     alert("로그인 후 이용해주세요!");
     return;
   }
-  navigate("/board");
+  navigate("/Home");
 };
 
   return (

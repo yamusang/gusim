@@ -1,7 +1,7 @@
-import { useNavigate } from "react-router-dom";
-import Button from "../common/Button"
-
-export default function BoardForm() {
+import React from 'react'
+import Button from '../common/Button'
+import { useNavigate } from 'react-router-dom';
+export default function PicBtn() {
     const navigate = useNavigate();
   const isLoggedIn = !!localStorage.getItem("token");
 const handleClick = () => {
@@ -9,9 +9,9 @@ const handleClick = () => {
     alert("로그인 후 이용해주세요!");
     return;
   }
-  navigate("/board");
+  navigate("/Pic");
 };
   return (
-    <Button onClick={handleClick}>게시판</Button>
+    <Button onClick={handleClick}>사진첩</Button>
   )
 }
