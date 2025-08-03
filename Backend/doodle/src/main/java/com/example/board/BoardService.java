@@ -42,8 +42,7 @@ public class BoardService {
                         .createdAt(board.getCreatedAt())
                         .viewCount(board.getViewCount())
                         .isDeleted(board.getIsDeleted())
-                        .build()
-                )
+                        .build())
                 .collect(Collectors.toList());
     }
 
