@@ -1,6 +1,7 @@
 // DB CRUD 처리 (JpaRepository)
 
-package com.example.doodle.domain;
+package com.example.board;
+
 
 public class BoardRepository {
     
