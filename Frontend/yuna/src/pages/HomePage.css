@@ -1,0 +1,117 @@
+/* src/pages/HomePage.css */
+.homepage-container {
+  padding: 2rem;
+  background-color: var(--background-color);
+}
+
+.minihompy-layout {
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  overflow: hidden; /* 자식 요소의 radius 적용을 위함 */
+}
+
+.minihompy-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background-color: var(--secondary-color);
+  color: white;
+  border-bottom: 3px solid var(--primary-color);
+}
+
+.minihompy-header .title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.minihompy-header .today-info {
+  font-size: 0.9rem;
+}
+
+.minihompy-content {
+  display: flex;
+  padding: 1.5rem;
+}
+
+.profile-section {
+  flex-basis: 200px;
+  flex-shrink: 0;
+  text-align: center;
+  padding-right: 1.5rem;
+  border-right: 1px solid #eee;
+}
+
+.profile-picture {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid var(--primary-color);
+  object-fit: cover;
+  margin-bottom: 1rem;
+}
+
+.profile-nickname {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0.5rem 0;
+}
+
+.profile-intro {
+  font-size: 0.85rem;
+  color: #666;
+  line-height: 1.4;
+}
+
+.main-display {
+  flex-grow: 1;
+  padding-left: 1.5rem;
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.main-display .welcome-message {
+  font-size: 1.5rem;
+  color: var(--secondary-color);
+  margin-bottom: 1rem;
+}
+
+.main-display p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #555;
+}
+
+.minihompy-menu {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: #f7f7f7;
+  border-top: 1px solid #eee;
+}
+
+.menu-item {
+  text-decoration: none;
+  padding: 0.6rem 1.5rem;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  color: var(--secondary-color);
+  font-weight: bold;
+  transition: all 0.2s ease-in-out;
+}
+
+.menu-item:hover {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+}
