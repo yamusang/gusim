@@ -4,7 +4,7 @@ import HomePage from '../pages/HomePage'
 import GuestPage from '../pages/GuestPage'
 import PicPage from '../pages/PicPage'
 import BoardPage from '../pages/BoardPage'
-
+import PostDetail from '../components/PostDetail'
 
 export default function App() {
   return (
@@ -12,8 +12,10 @@ export default function App() {
       <Route path='/' element={<LoginPage/>} />
       <Route path='/Home' element={<HomePage/>} />
       <Route path='/Board' element={<BoardPage/>}/>
+      <Route path='/Board/:id' element={<PostDetail />} />
       <Route path='/Guest' element={<GuestPage/>}/>
       <Route path='/Pic' element={<PicPage/>}/>
+      <Route path='*' element={<div>404 Not Found</div>} />
     </Routes>
   )
 }
