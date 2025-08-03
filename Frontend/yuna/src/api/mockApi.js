@@ -85,23 +85,5 @@ export const fetchPhotosByAlbum = async (albumId) => {
     return { album, photos: photosInAlbum };
 }
 
-export const fetchGuestbook = async (ownerId) => {
-    await delay(300);
-    return guestbook
-        .filter(e => e.owner_user_id === ownerId)
-        .map(e => ({...e, writer: users.find(u => u.user_id === e.writer_user_id).nickname}));
-}
 
-export const addGuestbookEntry = async ({ writerId, ownerId, content }) => {
-    await delay(300);
-    const newEntry = {
-        entry_id: guestbook.length + 1,
-        writer_user_id: writerId,
-        owner_user_id: ownerId,
-        content,
-        is_private: false,
-        created_at: new Date(),
-    };
-    guestbook.push(newEntry);
-    return { ...newEntry, writer: users.find(u => u.user_id === writerId).nickname };
-}
+

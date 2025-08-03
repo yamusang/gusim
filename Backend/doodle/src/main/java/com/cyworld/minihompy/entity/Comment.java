@@ -9,6 +9,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter @Setter
@@ -16,6 +18,10 @@ import java.time.LocalDateTime;
 @Table(name = "Comments")
 @EntityListeners(AuditingEntityListener.class)
 public class Comment {
+
+    @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY)
+    private List<Reply> replies = new ArrayList<>();
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
