@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import api from '../Api/Api'
+import api from '../Api/api'
 import Button from './common/Button'
 
 export default function LoginForm() {
