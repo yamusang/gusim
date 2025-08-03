@@ -1,5 +1,6 @@
-import PostList from '../components/PostList'
 import { useState } from 'react'
+import PostList from '../components/PostList'
+import '../styles/board.css'
 
 export default function BoardPage() {
   const [posts, setPosts] = useState([])
@@ -18,9 +19,14 @@ export default function BoardPage() {
   }
 
   return (
-    <div className="main-panel">
-      <h2>게시판</h2>
-      <PostList posts={posts} deletePost={deletePost} />
+    <div className='container'>
+      <div className='left-panel'>
+        <PostList posts={posts} deletePost={deletePost} />
+      </div>
+      <div className="main-panel" style={{ margin: '100px auto', maxWidth: '800px' }}>
+      <h2 style={{ fontFamily: 'dalmoori' }}>📋 게시판</h2>
+     
+    </div>
     </div>
   )
 }

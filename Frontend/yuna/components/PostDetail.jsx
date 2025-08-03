@@ -1,5 +1,5 @@
 import { useNavigate, useParams, Link } from "react-router-dom";
-import "../styles/post.css";
+
 
 export default function PostDetail({ posts, deletePost }) {
   const { id } = useParams();
@@ -16,14 +16,14 @@ export default function PostDetail({ posts, deletePost }) {
   };
 
   return (
-    <div className="post-box">
-      <h2 className="post-title">{post.title}</h2>
-      <p className="post-meta">작성자: {post.author} | 작성일: {post.date}</p>
-      <p className="post-content">{post.content}</p>
+    <div>
+      <h2>{post.title}</h2>
+      <p>작성자: {post.author} | 작성일: {post.date}</p>
+      <p>{post.content}</p>
       <div style={{ marginTop: "20px" }}>
-        <Link to={`/edit/${post.id}`} className="btn btn-edit">수정</Link>
-        <button className="btn btn-delete" onClick={handleDelete}>삭제</button>
-        <Link to="/" className="btn btn-back">목록</Link>
+        <Link to={`/edit/${post.id}`}>수정</Link>
+        <button onClick={handleDelete}>삭제</button>
+        <Link to="/" >목록</Link>
       </div>
     </div>
   );
