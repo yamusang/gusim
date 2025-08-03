@@ -1,13 +1,16 @@
 import { useNavigate } from "react-router"
-import "../styles/login.css"
+import "../styles/board.css"
 import SignUpForm from "../components/SignUpForm"
 import LoginForm from "../components/LoginForm"
 import Button from "../components/common/Button"
+import BoardBtn from "../components/Btn/BoardBtn"
+import GuestBtn from "../components/Btn/GuestBtn"
+import HomeBtn from "../components/Btn/HomeBtn"
+import PicBtn from "../components/Btn/PicBtn"
 import { useState } from "react"
 
 
 export default function LoginPage() {
-  const navigate = useNavigate()
   const [isopen, setisopen] = useState(false)
   const [isopen2, setisopen2] = useState(false)
 
@@ -37,10 +40,10 @@ export default function LoginPage() {
         <p>ㅎrㅈl만... ㄴr는 ㄱr끔 눈물을 흘린ㄷr....</p>
       </div>
       <div className="right-panel">
-        <Button>홈</Button>
-        <Button>게시판</Button>
-        <Button>사진첩</Button>
-        <Button>방명록</Button>
+        <HomeBtn/>
+        <BoardBtn/>
+        <PicBtn/>
+        <GuestBtn/>
       </div>
     </div>
   )

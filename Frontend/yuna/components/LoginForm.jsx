@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import api from '../Api/Api'
+import api from '../Api/api'
 import Button from './common/Button'
 
 export default function LoginForm() {
@@ -26,6 +26,7 @@ export default function LoginForm() {
         password: loginpassword
       })
       localStorage.setItem('token', res.data.token)
+      window.location.href = '/home'
       setloginmessage('로그인 성공!')
     } catch (error) {
       setloginmessage('로그인 실패!')
