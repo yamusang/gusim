@@ -9,8 +9,8 @@ import BoardPage from '../pages/BoardPage'
 export default function App() {
   return (
     <Routes>
-      <Route path='/' element={<LoginPage />} />
-      <Route path='/home' element={<HomePage />} />
+      <Route path='/' element={<LoginPage/>} />
+      <Route path='/Home' element={<HomePage/>} />
       <Route path='/Board' element={<BoardPage/>}/>
       <Route path='/Guest' element={<GuestPage/>}/>
       <Route path='/Pic' element={<PicPage/>}/>
