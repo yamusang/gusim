@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router"
-import "../styles/login.css"
+import "../styles/board.css"
 import SignUpForm from "../components/SignUpForm"
 import LoginForm from "../components/LoginForm"
 import Button from "../components/common/Button"
-import BoardForm from "../components/Form/BoardForm"
-import GuestForm from "../components/Form/GuestForm"
-import HomeForm from "../components/Form/HomeForm"
-import PicForm from "../components/Form/PicForm"
+import BoardBtn from "../components/Btn/BoardBtn"
+import GuestBtn from "../components/Btn/GuestBtn"
+import HomeBtn from "../components/Btn/HomeBtn"
+import PicBtn from "../components/Btn/PicBtn"
 import { useState } from "react"
 
 
@@ -40,10 +40,10 @@ export default function LoginPage() {
         <p>ㅎrㅈl만... ㄴr는 ㄱr끔 눈물을 흘린ㄷr....</p>
       </div>
       <div className="right-panel">
-        <HomeForm/>
-        <BoardForm/>
-        <PicForm/>
-        <GuestForm/>
+        <HomeBtn/>
+        <BoardBtn/>
+        <PicBtn/>
+        <GuestBtn/>
       </div>
     </div>
   )
