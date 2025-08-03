@@ -33,13 +33,14 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> {
-                }) // ✅ 수정된 부분: and() 제거
+                })
                 .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // ✅ preflight 허용
                         .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/api/login", "/api/signup", "/api/kakao-login").permitAll()
+                        .requestMatchers("/api/login", "/api/signup", "/api/kakao-login","api/logout").permitAll()
                         .anyRequest().authenticated())
+                        
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
 
