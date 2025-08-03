@@ -8,6 +8,7 @@ import com.example.doodle.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ public class UserController {
 
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
+    private final PasswordEncoder passwordEncoder; // ✅ 추가
     private final HttpSession session;
 
     // ✅ 일반 로그인
@@ -35,7 +37,7 @@ public class UserController {
 
         User user = userOptional.get();
 
-        if (!user.getPassword().equals(request.getPassword())) {
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호 틀림");
         }
 
@@ -59,7 +61,7 @@ public class UserController {
 
         User newUser = new User();
         newUser.setEmail(request.getEmail());
-        newUser.setPassword(request.getPassword());
+        newUser.setPassword(passwordEncoder.encode(request.getPassword())); // ✅ 암호화
         newUser.setUsername(request.getUsername());
 
         userRepository.save(newUser);
