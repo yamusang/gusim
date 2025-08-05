@@ -15,7 +15,6 @@ export default function App() {
       <Route path='/Board/:id' element={<PostDetail />} />
       <Route path='/Guest' element={<GuestPage/>}/>
       <Route path='/Pic' element={<PicPage/>}/>
-      <Route path='*' element={<div>404 Not Found</div>} />
     </Routes>
   )
 }
