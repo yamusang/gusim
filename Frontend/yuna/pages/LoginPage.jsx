@@ -17,6 +17,8 @@ export default function LoginPage() {
   const toggleForm = () => setisopen(!isopen)
   const toggleForm2 = () => setisopen2(!isopen2)
 
+  const token = localStorage.getItem("token")
+
   return (
     <div className="container">
       <div className="left-panel">
@@ -39,12 +41,12 @@ export default function LoginPage() {
         <p>ㅁl련도.. ㅇr픔도...</p>
         <p>ㅎrㅈl만... ㄴr는 ㄱr끔 눈물을 흘린ㄷr....</p>
       </div>
-      <div className="right-panel">
+      {token && (<div className="right-panel">
         <HomeBtn/>
         <BoardBtn/>
         <PicBtn/>
         <GuestBtn/>
-      </div>
+      </div>)}
     </div>
   )
 }
