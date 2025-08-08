@@ -8,6 +8,6 @@ export default function LogoutForm() {
 };
 
   return (
-    <Button className='btn'>로그아웃</Button>
+    <Button className='btn' onClick={handleLogout}>로그아웃</Button>
   )
 }
