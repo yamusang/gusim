@@ -1,32 +1,25 @@
-package com.cyworld.minihompy;
+package com.cyworld.minihompy.config;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
-@SpringBootApplication(scanBasePackages = "com.cyworld.minihompy")
-@EnableJpaAuditing
-public class CyworldApplication {
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
 
-    public static void main(String[] args) {
-        SpringApplication.run(CyworldApplication.class, args);
-    }
-
-    // 🔥 여기부터 추가
     @Bean
-    public SecurityFilterChain appSecurity(HttpSecurity http) throws Exception {
-        System.out.println(">>> appSecurity SecurityFilterChain bean created");
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        System.out.println(">>> SecurityFilterChain bean created");
 
         http
             .csrf(csrf -> csrf.disable())
@@ -50,7 +43,7 @@ public class CyworldApplication {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration cfg = new CorsConfiguration();
-        cfg.setAllowedOrigins(List.of("http://localhost:5173", "http://127.0.0.1:5173"));
+        cfg.setAllowedOrigins(List.of("http://localhost:5173","http://127.0.0.1:5173"));
         cfg.setAllowedMethods(List.of("GET","POST","PUT","PATCH","DELETE","OPTIONS"));
         cfg.setAllowedHeaders(List.of("Authorization","Content-Type","X-Requested-With"));
         cfg.setAllowCredentials(true);
@@ -59,5 +52,4 @@ public class CyworldApplication {
         source.registerCorsConfiguration("/**", cfg);
         return source;
     }
-    // 🔥 여기까지
 }

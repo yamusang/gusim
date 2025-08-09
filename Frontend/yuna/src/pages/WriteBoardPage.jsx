@@ -36,13 +36,16 @@ export default function WriteBoardPage() {
       await createPost({
         title: title.trim(),
         content: content.trim(),
-        userId: user?.user_id, // mockAuth 기준
+        userId: user && user.user_id, // optional chaining 제거
       });
 
       navigate('/board');
     } catch (err) {
       console.error('게시글 등록 실패:', err);
-      setError(err?.response?.data?.message ?? '게시글 작성에 실패했습니다.');
+      const msg =
+        (err && err.response && err.response.data && err.response.data.message) ||
+        '게시글 작성에 실패했습니다.';
+      setError(msg); // ?? 제거
     } finally {
       setLoading(false);
     }
