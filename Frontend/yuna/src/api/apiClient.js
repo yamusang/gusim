@@ -1,83 +1,55 @@
+// src/api/apiClient.ts (또는 .js)
 import axios from 'axios';
 
-// Axios 인스턴스 생성: 모든 요청의 기본 URL과 설정을 관리합니다.
 const apiClient = axios.create({
-  baseURL: 'http://localhost:5173/api', // Spring Boot 서버 주소
-  withCredentials: true, // 세션/쿠키 기반 인증 시 필요할 수 있음
+  baseURL: 'http://localhost:8080/api', // ✅ 백엔드 주소로 변경
+  withCredentials: false, // ✅ 쿠키 인증 쓸 때만 true
+  headers: { 'Content-Type': 'application/json' },
 });
 
+// ✅ (선택) JWT 쓰면 자동 첨부
+apiClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token'); // 저장 키 맞춰서 사용
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
 
-/**
- * 인증 (Authentication) API
- */
+// === Auth ===
 export const apiLogin = async (username, password) => {
-  const response = await apiClient.post('/auth/login', { username, password });
-  return response.data; // { userId, nickname, miniHompyName }
+  const { data } = await apiClient.post('/auth/login', { username, password });
+  // data 안에 token 있으면 localStorage.setItem('token', data.token);
+  return data; // { userId, nickname, miniHompyName, token? }
 };
 
+// === Posts ===
+export const fetchPosts = async () => (await apiClient.get('/posts')).data;
 
-/**
- * 게시판 (Posts) API
- */
-export const fetchPosts = async () => {
-  const response = await apiClient.get('/posts');
-  return response.data;
-};
+export const fetchPostById = async (postId) =>
+  (await apiClient.get(`/posts/${postId}`)).data;
 
-export const fetchPostById = async (postId) => {
-  const response = await apiClient.get(`/posts/${postId}`);
-  return response.data;
-};
+// 👉 등록하기: 서버가 토큰에서 유저 식별하면 userId 빼고 보내기 권장
+export const createPost = async (postData) =>
+  (await apiClient.post('/posts', postData)).data;
 
+// === Comments ===
+export const fetchCommentsByPostId = async (postId) =>
+  (await apiClient.get(`/posts/${postId}/comments`)).data;
 
-/**
- * 댓글 (Comments) API
- */
-export const fetchCommentsByPostId = async (postId) => {
-  const response = await apiClient.get(`/posts/${postId}/comments`);
-  return response.data;
-};
+export const addComment = async ({ postId, userId, content, parentCommentId }) =>
+  (await apiClient.post(`/posts/${postId}/comments`, { content, userId, parentCommentId })).data;
 
-export const addComment = async ({ postId, userId, content, parentCommentId }) => {
-  const response = await apiClient.post(`/posts/${postId}/comments`, {
-    content,
-    userId,
-    parentCommentId,
-  });
-  return response.data;
-};
+// === Albums & Photos ===
+export const fetchAlbumsByUser = async (userId) =>
+  (await apiClient.get(`/albums/user/${userId}`)).data;
 
+export const fetchPhotosByAlbum = async (albumId) =>
+  (await apiClient.get(`/albums/${albumId}`)).data;
 
-/**
- * 사진첩 (Albums & Photos) API
- */
-export const fetchAlbumsByUser = async (userId) => {
-  const response = await apiClient.get(`/albums/user/${userId}`);
-  return response.data;
-};
+// === Guestbook ===
+export const fetchGuestbook = async (ownerUserId) =>
+  (await apiClient.get(`/guestbooks/${ownerUserId}`)).data;
 
-export const fetchPhotosByAlbum = async (albumId) => {
-  const response = await apiClient.get(`/albums/${albumId}`);
-  return response.data;
-};
+export const addGuestbookEntry = async (entryData) =>
+  (await apiClient.post('/guestbooks', entryData)).data;
 
-
-/**
- * 방명록 (Guestbook) API
- */
-export const fetchGuestbook = async (ownerUserId) => {
-  const response = await apiClient.get(`/guestbooks/${ownerUserId}`);
-  return response.data;
-};
-
-export const addGuestbookEntry = async (entryData) => {
-  // entryData: { content, writerUserId, ownerUserId }
-  const response = await apiClient.post('/guestbooks', entryData);
-  return response.data;
-};
-export const createPost = async (postData) => {
-  const response = await apiClient.post('/posts', postData);
-  return response.data;
-};
-
-
+export default apiClient;
