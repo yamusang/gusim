@@ -1,21 +1,21 @@
-// src/pages/WriteBoardPage.tsx
+// src/pages/WriteBoardPage.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { createPost } from '../api/apiClient';
 
-const WriteBoardPage: React.FC = () => {
+export default function WriteBoardPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  const [title, setTitle] = useState<string>('');
-  const [content, setContent] = useState<string>('');
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const isValid = title.trim().length > 0 && content.trim().length > 0;
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (loading) return;
 
@@ -33,16 +33,14 @@ const WriteBoardPage: React.FC = () => {
     try {
       setLoading(true);
 
-      // 백엔드가 토큰에서 유저 식별 안 해주면 userId 필요
       await createPost({
         title: title.trim(),
         content: content.trim(),
-        userId: (user as any).user_id, // ★ mockAuth: user.user_id 사용
+        userId: user?.user_id, // mockAuth 기준
       });
 
-      // 성공 후 목록으로
       navigate('/board');
-    } catch (err: any) {
+    } catch (err) {
       console.error('게시글 등록 실패:', err);
       setError(err?.response?.data?.message ?? '게시글 작성에 실패했습니다.');
     } finally {
@@ -96,7 +94,4 @@ const WriteBoardPage: React.FC = () => {
       </form>
     </div>
   );
-};
-
-export default WriteBoardPage;
-//
+}
