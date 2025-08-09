@@ -1,24 +1,22 @@
-// src/pages/WriteBoardPage.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { createPost } from '../api/apiClient';
 
-export default function WriteBoardPage() {
+const WriteBoardPage: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [error, setError] = useState(null);
+  const [title, setTitle] = useState<string>('');
+  const [content, setContent] = useState<string>('');
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   const isValid = title.trim().length > 0 && content.trim().length > 0;
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (loading) return;
-
     setError(null);
 
     if (!user) {
@@ -33,24 +31,29 @@ export default function WriteBoardPage() {
     try {
       setLoading(true);
 
-      await createPost({
+      // 서버가 토큰에서 유저 식별하면 userId 제거
+      // const created = await createPost({ title: title.trim(), content: content.trim() });
+
+      const created = await createPost({
         title: title.trim(),
         content: content.trim(),
-        userId: user?.user_id, // mockAuth 기준
+        userId: user.userId,
       });
 
+      // 상세 이동 원하면 아래:
+      // navigate(`/board/${created.id}`);
       navigate('/board');
     } catch (err) {
       console.error('게시글 등록 실패:', err);
-      setError(err?.response?.data?.message ?? '게시글 작성에 실패했습니다.');
+      setError('게시글 등록 중 오류가 발생했습니다.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="container" style={{ maxWidth: 720, margin: '0 auto', padding: 16 }}>
-      <h2 style={{ marginBottom: 16 }}>게시글 작성</h2>
+    <div className="container">
+      <h2>게시글 작성</h2>
 
       {error && (
         <p style={{ color: 'red', marginTop: 8, marginBottom: 12 }}>{error}</p>
@@ -65,7 +68,7 @@ export default function WriteBoardPage() {
             onChange={(e) => setTitle(e.target.value)}
             required
             maxLength={100}
-            style={{ width: '100%', padding: 10, boxSizing: 'border-box' }}
+            style={{ width: '100%', padding: 10 }}
           />
         </div>
 
@@ -76,7 +79,7 @@ export default function WriteBoardPage() {
             onChange={(e) => setContent(e.target.value)}
             rows={10}
             required
-            style={{ width: '100%', padding: 10, resize: 'vertical', boxSizing: 'border-box' }}
+            style={{ width: '100%', padding: 10, resize: 'vertical' }}
           />
         </div>
 
@@ -94,4 +97,6 @@ export default function WriteBoardPage() {
       </form>
     </div>
   );
-}
+};
+
+export default WriteBoardPage;
