@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-  baseURL: 'http://localhost:8080/api', // ✅ 백엔드 주소
+  baseURL: 'http://localhost:8081/api', // ✅ 백엔드 주소
   withCredentials: false, // ✅ 쿠키 인증 안 쓰면 false
   headers: { 'Content-Type': 'application/json' },
 });

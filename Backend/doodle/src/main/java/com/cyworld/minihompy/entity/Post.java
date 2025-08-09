@@ -38,7 +38,7 @@ public class Post {
     private LocalDateTime updatedAt;
 
     @Column(nullable = false)
-    private Integer viewCount = 0;
+    private Long viewCount = 0L;
 
     @Column(nullable = false)
     private Boolean isDeleted = false;
