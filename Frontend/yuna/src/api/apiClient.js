@@ -2,8 +2,8 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-  baseURL: 'http://localhost:8080/api', // ✅ 백엔드 주소로 변경
-  withCredentials: false, // ✅ 쿠키 인증 쓸 때만 true
+  baseURL: 'http://localhost:8080/api', // ✅ 백엔드 주소
+  withCredentials: false, // ✅ 쿠키 인증 안 쓰면 false
   headers: { 'Content-Type': 'application/json' },
 });
 
@@ -14,38 +14,52 @@ apiClient.interceptors.request.use((config) => {
   return config;
 });
 
-// === Auth ===
+/* =========================
+      Auth
+========================= */
 export const apiLogin = async (username, password) => {
   const { data } = await apiClient.post('/auth/login', { username, password });
   // data 안에 token 있으면 localStorage.setItem('token', data.token);
   return data; // { userId, nickname, miniHompyName, token? }
 };
 
-// === Posts ===
-export const fetchPosts = async () => (await apiClient.get('/posts')).data;
+/* =========================
+      Posts
+========================= */
+// 등록하기: 서버가 토큰에서 유저 식별하면 userId 빼고 보내기 권장
+export const createPost = async ({ title, content, userId }) =>
+  (await apiClient.post('/posts', { title, content, userId })).data;
+
+export const fetchPosts = async () =>
+  (await apiClient.get('/posts')).data;
 
 export const fetchPostById = async (postId) =>
   (await apiClient.get(`/posts/${postId}`)).data;
 
-// 👉 등록하기: 서버가 토큰에서 유저 식별하면 userId 빼고 보내기 권장
-export const createPost = async (postData) =>
-  (await apiClient.post('/posts', postData)).data;
+export const fetchPost = async (id) =>
+  (await apiClient.get(`/posts/${id}`)).data;
 
-// === Comments ===
+/* =========================
+      Comments
+========================= */
 export const fetchCommentsByPostId = async (postId) =>
   (await apiClient.get(`/posts/${postId}/comments`)).data;
 
 export const addComment = async ({ postId, userId, content, parentCommentId }) =>
   (await apiClient.post(`/posts/${postId}/comments`, { content, userId, parentCommentId })).data;
 
-// === Albums & Photos ===
+/* =========================
+      Albums & Photos
+========================= */
 export const fetchAlbumsByUser = async (userId) =>
   (await apiClient.get(`/albums/user/${userId}`)).data;
 
 export const fetchPhotosByAlbum = async (albumId) =>
   (await apiClient.get(`/albums/${albumId}`)).data;
 
-// === Guestbook ===
+/* =========================
+      Guestbook
+========================= */
 export const fetchGuestbook = async (ownerUserId) =>
   (await apiClient.get(`/guestbooks/${ownerUserId}`)).data;
 

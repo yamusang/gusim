@@ -1,3 +1,4 @@
+// src/pages/WriteBoardPage.tsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -10,13 +11,14 @@ const WriteBoardPage: React.FC = () => {
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const isValid = title.trim().length > 0 && content.trim().length > 0;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (loading) return;
+
     setError(null);
 
     if (!user) {
@@ -31,29 +33,26 @@ const WriteBoardPage: React.FC = () => {
     try {
       setLoading(true);
 
-      // 서버가 토큰에서 유저 식별하면 userId 제거
-      // const created = await createPost({ title: title.trim(), content: content.trim() });
-
-      const created = await createPost({
+      // 백엔드가 토큰에서 유저 식별 안 해주면 userId 필요
+      await createPost({
         title: title.trim(),
         content: content.trim(),
-        userId: user.userId,
+        userId: (user as any).user_id, // ★ mockAuth: user.user_id 사용
       });
 
-      // 상세 이동 원하면 아래:
-      // navigate(`/board/${created.id}`);
+      // 성공 후 목록으로
       navigate('/board');
-    } catch (err) {
+    } catch (err: any) {
       console.error('게시글 등록 실패:', err);
-      setError('게시글 등록 중 오류가 발생했습니다.');
+      setError(err?.response?.data?.message ?? '게시글 작성에 실패했습니다.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="container">
-      <h2>게시글 작성</h2>
+    <div className="container" style={{ maxWidth: 720, margin: '0 auto', padding: 16 }}>
+      <h2 style={{ marginBottom: 16 }}>게시글 작성</h2>
 
       {error && (
         <p style={{ color: 'red', marginTop: 8, marginBottom: 12 }}>{error}</p>
@@ -68,7 +67,7 @@ const WriteBoardPage: React.FC = () => {
             onChange={(e) => setTitle(e.target.value)}
             required
             maxLength={100}
-            style={{ width: '100%', padding: 10 }}
+            style={{ width: '100%', padding: 10, boxSizing: 'border-box' }}
           />
         </div>
 
@@ -79,7 +78,7 @@ const WriteBoardPage: React.FC = () => {
             onChange={(e) => setContent(e.target.value)}
             rows={10}
             required
-            style={{ width: '100%', padding: 10, resize: 'vertical' }}
+            style={{ width: '100%', padding: 10, resize: 'vertical', boxSizing: 'border-box' }}
           />
         </div>
 
