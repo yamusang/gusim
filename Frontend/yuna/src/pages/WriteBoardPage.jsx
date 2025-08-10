@@ -2,7 +2,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { createPost } from '../api/apiClient';
+import { createPost } from '../api/apiClient'; // or '@api/apiClient'
+
+
+// user 객체에서 PK 뽑기(네 프로젝트 구조에 맞게 우선순위로 체크)
+const pickUserId = (user) =>
+  user?.userId ?? user?.id ?? user?.user_id ?? null;
 
 export default function WriteBoardPage() {
   const { user } = useAuth();
@@ -10,7 +15,7 @@ export default function WriteBoardPage() {
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [error, setError] = useState(null);
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const isValid = title.trim().length > 0 && content.trim().length > 0;
@@ -18,11 +23,12 @@ export default function WriteBoardPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (loading) return;
+    setError('');
 
-    setError(null);
-
-    if (!user) {
-      alert('로그인이 필요합니다.');
+    const uid = pickUserId(user);
+    if (!user || uid == null) {
+      setError('로그인 정보가 없거나 userId를 찾을 수 없어요.');
+      console.warn('user object:', user);
       return;
     }
     if (!isValid) {
@@ -33,19 +39,21 @@ export default function WriteBoardPage() {
     try {
       setLoading(true);
 
-      await createPost({
+      const payload = {
         title: title.trim(),
         content: content.trim(),
-        userId: user && user.user_id, // optional chaining 제거
-      });
+        userId: uid, // ★ 백엔드 DTO 필드명과 동일해야 함
+      };
 
-      navigate('/board');
+      await createPost(payload);
+      navigate('/board'); // 작성 후 목록으로 이동
     } catch (err) {
       console.error('게시글 등록 실패:', err);
       const msg =
-        (err && err.response && err.response.data && err.response.data.message) ||
+        err?.response?.data?.message ||
+        err?.response?.data ||
         '게시글 작성에 실패했습니다.';
-      setError(msg); // ?? 제거
+      setError(msg);
     } finally {
       setLoading(false);
     }
@@ -55,11 +63,9 @@ export default function WriteBoardPage() {
     <div className="container" style={{ maxWidth: 720, margin: '0 auto', padding: 16 }}>
       <h2 style={{ marginBottom: 16 }}>게시글 작성</h2>
 
-      {error && (
-        <p style={{ color: 'red', marginTop: 8, marginBottom: 12 }}>{error}</p>
-      )}
+      {error && <p style={{ color: 'red', margin: '8px 0 12px' }}>{error}</p>}
 
-      <form onSubmit={handleSubmit} className="write-form" style={{ display: 'grid', gap: 12 }}>
+      <form onSubmit={handleSubmit} style={{ display: 'grid', gap: 12 }}>
         <div>
           <input
             type="text"
