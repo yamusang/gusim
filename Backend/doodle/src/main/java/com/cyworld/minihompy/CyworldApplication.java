@@ -2,62 +2,15 @@ package com.cyworld.minihompy;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.SecurityFilterChain;
 
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.List;
-
-@SpringBootApplication(scanBasePackages = "com.cyworld.minihompy")
+@SpringBootApplication(scanBasePackages = {
+    "c.cyworld.minihompy",
+    "com.cyworld.minihompy"   // 🔥 com 패키지도 함께 스캔!
+})
 @EnableJpaAuditing
 public class CyworldApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(CyworldApplication.class, args);
     }
-
-    // 🔥 여기부터 추가
-    @Bean
-    public SecurityFilterChain appSecurity(HttpSecurity http) throws Exception {
-        System.out.println(">>> appSecurity SecurityFilterChain bean created");
-
-        http
-            .csrf(csrf -> csrf.disable())
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .formLogin(f -> f.disable())
-            .httpBasic(b -> b.disable())
-            .exceptionHandling(h -> h
-                .authenticationEntryPoint((req, res, ex) -> res.sendError(401))
-                .accessDeniedHandler((req, res, ex) -> res.sendError(403))
-            )
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
-                .anyRequest().permitAll()
-            );
-
-        return http.build();
-    }
-
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration cfg = new CorsConfiguration();
-        cfg.setAllowedOrigins(List.of("http://localhost:5173", "http://127.0.0.1:5173"));
-        cfg.setAllowedMethods(List.of("GET","POST","PUT","PATCH","DELETE","OPTIONS"));
-        cfg.setAllowedHeaders(List.of("Authorization","Content-Type","X-Requested-With"));
-        cfg.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", cfg);
-        return source;
-    }
-    // 🔥 여기까지
 }

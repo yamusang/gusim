@@ -9,7 +9,7 @@ export default function KakaoCallback() {
       const code = params.get('code')
 
       try {
-        const res = await axios.post('http://localhost:8080/api/kakao-login', {
+        const res = await axios.post('http://localhost:8081/api/kakao-login', {
           code,
         })
 
