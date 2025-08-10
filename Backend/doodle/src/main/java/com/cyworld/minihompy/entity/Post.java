@@ -11,7 +11,8 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "Posts")
 @EntityListeners(AuditingEntityListener.class)

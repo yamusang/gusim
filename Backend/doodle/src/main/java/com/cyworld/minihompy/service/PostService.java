@@ -30,7 +30,8 @@ public class PostService {
     public PostResponseDto getPostById(Long postId) {
         Post post = postRepository.findByPostIdAndIsDeletedFalse(postId)
                 .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
-        post.setViewCount(post.getViewCount() + 1);
+        Long current = post.getViewCount() == null ? 0L : post.getViewCount();
+        post.setViewCount(current + 1); // ✅ Long 연산
         return new PostResponseDto(post);
     }
 
@@ -47,7 +48,8 @@ public class PostService {
         post.setContent(dto.getContent());
         post.setUser(user);
         post.setIsDeleted(false);
-        if (post.getViewCount() == null) post.setViewCount(0L);
+        if (post.getViewCount() == null)
+            post.setViewCount(0L);
 
         // 3) 저장
         Post saved = postRepository.save(post);

@@ -12,7 +12,7 @@ public class PostResponseDto {
     private String content;
     private String authorNickname;
     private LocalDateTime createdAt;
-    private Integer viewCount;
+    private Long viewCount;
 
     public PostResponseDto(Post post) {
         this.postId = post.getPostId();
